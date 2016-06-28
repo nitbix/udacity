@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Prosper Loan volume by State</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
+  </head>
+<body>
+  <div class="container">
+    <div class="row" align="center">
+      Most loan volume by US state
+      <div id="container" style="border:0px; width: 700px; height: 475px; position: relative;"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var data = "prosperLoanData.csv";
+    var csv = d3.csv(data, function(d)
+        {
+            return {
+                'State': d.BorrowerState,
+                'Amount': parseFloat(d.LoanOriginalAmount)
+            }
+        },
+
+        function(csv)
+        {
+            var dataset = [];
+            var aggregate = {};
+
+            //aggregate all the data by state
+            csv.forEach(function(item){
+                var state = item.State
+                if (!(state in aggregate))
+                {
+                    aggregate[state] = 0
+                }
+                if(! isNaN(item.Amount))
+                {
+                    aggregate[state] += item.Amount;
+                }
+            });
+
+            for (var state in aggregate)
+            {
+                dataset.push({ State: state, Volume: aggregate[state]});
+            }
+            console.log(dataset);
+
+            var svg = dimple.newSvg("#container", 700, 475);
+
+            var chart = new dimple.chart(svg, dataset);
+            chart.setBounds(60, 30, 640, 415)
+            chart.addCategoryAxis("x", "State");
+            chart.addMeasureAxis("y", "Volume");
+            chart.addSeries(null, dimple.plot.bar);
+            chart.draw();
+        }
+    );
+
+
+  </script>
+</body>
+</html>
