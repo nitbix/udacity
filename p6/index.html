@@ -2,16 +2,29 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Prosper Loan volume by State</title>
+    <title>Prosper Loan total amount of borrowing by State (USD)</title>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.2.0.min.js"></script>
     <script src="datamaps.usa.min.js"></script>
   </head>
 <body>
   <div class="container">
     <div class="row" align="center">
-      Most loan volume by US state
-      <div id="container" style="border:0px; width: 700px; height: 475px; position: relative;"></div>
+      <h2>Total amount of borrowing by US state (USD)</h2>
+      <p align="left">
+      This graphs shows the total amount of money borrowed from Prosper Loans,
+      aggregated by the state in which the borrower resided. It is clear that
+      the main state where money is being borrowed on Prosper is California, and
+      only a handful of additional states with significant amounts of money
+      borrowed.
+      </p>
+      <div id="container1" style="border:0px; width: 700px; height: 475px; position: relative;"></div>
+      <p align="left">
+      Here we can see how significant the difference is between California and
+      the closest second (Texas).
+      </p>
+      <div id="container2" style="border:0px; width: 700px; height: 275px; position: relative;"></div>
     </div>
   </div>
   <script type="text/javascript">
@@ -140,7 +153,7 @@
 
             // render map
             var map = new Datamap({
-                element: document.getElementById('container'),
+                element: document.getElementById('container1'),
                 scope: 'usa',
                 fills: { defaultFill: '#F5F5F5' },
                 data: dataset,
@@ -155,9 +168,9 @@
                         if (!data) { return ; }
                         // tooltip content
                         return ['<div class="hoverinfo">',
-                            '<strong>', geo.properties.name, '</strong>',
-                            '<br>Total Borrowing: <strong>',
-                            abbreviateNumber(data.numberOfThings), '$</strong>',
+                            geo.properties.name,
+                            '<br><strong>Total Borrowing (USD):',
+                            abbreviateNumber(data.numberOfThings), '$ </strong>',
                             '<br>Mean Borrowing: <strong>',
                             data.meanBorrowed.toFixed(2), '$</strong>',
                             '<br>Mean APR: <strong>',
@@ -171,6 +184,22 @@
                 }
             });
             map.labels()
+            dataset2 = []
+            for (var state in aggregate)
+            {
+                dataset2.push({ State: state, Volume: aggregate[state]['Amount']});
+            }
+
+            var svg = dimple.newSvg("#container2", 700, 275);
+            console.log(dataset2);
+
+            var chart = new dimple.chart(svg, dataset2);
+            chart.setBounds(60, 30, 640, 215)
+            x = chart.addCategoryAxis("x", "State");
+            y = chart.addMeasureAxis("y", "Volume");
+            chart.addSeries(null, dimple.plot.bar);
+            chart.draw();
+            y.titleShape.text("Total Borrowing (USD)")
         }
     );
 
