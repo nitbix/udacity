@@ -12,7 +12,8 @@ anywhere else.
 This started as a bar chart. I imagined that the vertical distance between
 California and the closest second would be useful information, and a bar chart
 makes it very obvious. However, the visualization was very cluttered because
-there were 50 bars, and a lot of labels at the bottom.
+there were 50 bars, and a lot of labels at the bottom. I also tried a horizontal
+bar chart, but it stayed exactly the same.
 
 After the first suggestion, I changed it to a pie chart, with the first 5 states
 listed, and the rest grouped under "other". This clearly conveyed the idea that
