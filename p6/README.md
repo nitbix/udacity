@@ -24,7 +24,8 @@ map.
 
 ####1
 The bar chart is very cluttered, and even if it can be seen that there is a
-dominant state, the confusion in labels makes it hard to read.
+dominant state, the confusion in labels makes it hard to read. One of the bars
+is missin a label.
 
 ####2
 I like the fact that you can clearly tell that California has a lot more volume,
