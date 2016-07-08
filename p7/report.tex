@@ -6,11 +6,98 @@
 
 \maketitle
 
-\section{Experiment Design}
+\section{Metrics Choice}
+
+Invariant Metrics:
+
+\begin{itemize}
+\item Number of Cookies
+\item Number of Clicks
+\end{itemize}
+
+Evaluation Metrics:
+
+\begin{itemize}
+\item Gross Conversion
+\item Net Conversion
+\item Retention
+\end{itemize}
 
 \section{Variability}
+Given the following data about the experiment:
+\begin{itemize}
+\item Unique cookies to view page per day $N_{view} = 40000$
+\item Unique cookies to click "Start free trial" per day $N_{click} = 3200$
+\item Enrolments per day $E = 660$
+\item Click-through probability on "Start free trial" $P(click) = 0.08$
+\item $P(E|click) = 0.20625$
+\item $P(Pay|E) = 0.53$
+\item $P(Pay|Click) = 0.1093125$
+\end{itemize}
+
+If we assume a sample size $S = 5000$ unique cookies visiting the page, based on
+the original data, the number of clicks would be:
+\begin{equation}
+\hat{N}_{click} = S * P(click) = 400
+\end{equation}
+and the number of enrolments:
+\begin{equation}
+\hat{N}_{enroll} = S * P(click) * P(E|click) = 82.5
+\end{equation}
+
+
+Given that all the chosen metrics can be assumed to follow a Binomial
+distribution, the estimate of Standard Error follows:
+\begin{equation}
+SE = \sqrt{\frac{\hat{p}(1-\hat{p})}{N}}
+\end{equation}
+
+so for each metric, the SE is:
+\begin{itemize}
+\item Gross Conversion: $0.020231$
+\item Retention: $0.0549$
+\item Net conversion: $0.015602$
+\end{itemize}
 
 \section{Sizing}
+\subsection{Number of Samples}
+With a type I error rate of $\alpha=0.05$ and a type II error of $\beta = 0.2$,
+the minimum detectable effects are $d_{gc,min} = 0.01$, $d_{r,min} = 0.01$,
+$d_{nc,min} = 0.0075$.
+I will not be using the Bonferroni correction, because the measures are
+covariant.
+
+The ratios of clicks to pageviews is $\frac{N_{clicks}}{N_{views}} = 0.08$ and the
+ration of conversions to pageviews is $\frac{N_{enroll}}{N_{views}} = 0.0165$,
+which will be used for corrections.
+
+The non-corrected experiment sizes are as follows:
+\begin{itemize}
+\item Gross Conversion: $25835$
+\item Net Conversion: $27413$
+\end{itemize}
+
+After the corrections they are as follows:
+\begin{itemize}
+\item Gross Conversion: $322938$
+\item Net Conversion: $342662.5$
+\end{itemize}
+
+Doubling the maximum because we need this number of pageviews for each
+hypothesis, we get a total of $685325$ pageviews required.
+
+\subsection{Duration vs Exposure}
+Given the relatively low risk nature of the experiment\footnote{It does not
+affect any of the pages with content, so it does not affect existing users, and
+it is only adding a small prompt that wouldn't be considered annoying by most
+people}, it makes sense to divert a large amount of traffic to it to reach a
+conclusion quickly. However, it also makes sense to keep a small amount of
+traffic out of the experiment, in case there was an error or bug in the
+experiment, so that it can be detected quickly.  Therefore I would say that
+diverting $90$\% of Udacity traffic makes sense. Give a daily traffic of $40000$
+pageviews, this means there would be $36000$ pageviews dedicated to the
+experiment. The total duration of the experiment would be of $19.03$ days, which
+will be rounded to $20$. This is an acceptable time.
 
 \section{Sanity Checks}
 
