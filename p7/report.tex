@@ -9,19 +9,75 @@
 
 \section{Metrics Choice}
 
-Invariant Metrics:
+\subsection{Invariant Metrics}
 
 \begin{itemize}
 \item Number of Cookies
+This was chosen because it is an easy way of identifying unique visitors, which
+makes it a good choice for a unit of diversion. It has not been chosen as an
+evaluation metric because it shouldn't be affected by the change that is being
+evaluated.
+
 \item Number of Clicks
+This was chosen as an invariant (and not for evaluation) because it also isn't
+affected by the change that is being evaluated.
 \end{itemize}
 
-Evaluation Metrics:
+\subsection{Evaluation Metrics}
 
 \begin{itemize}
 \item Gross Conversion
+This measure is directly affected by the experiment, and it helps to determine
+if the number of people that click on the sign-up link for the trial and then
+leave after it ends can be reduced.
+
 \item Net Conversion
+This measure is directly affected by the experiment, and it helps to determine
+if the number of people that click on the sign-up link and pay is affected.
+
+\end{itemize}
+
+\subsection{Discarded Metrics}
+\begin{itemize}
+\item Number of user-ids
+This measure is affected by the experiment, as we can't expect the number of
+user-ids to be split evenly between control and experiment. It also doesn't show
+any useful information about the experiment so it shouldn't be used as an
+evaluation metric.
+
 \item Retention
+This was initially selected as an evaluation metric because it directly measures
+the effect of the experiment, but using it would have made the length of the
+experiment $132$ days, which was too high, so it has been subsequently
+discarded.  It can't be used as an invariant because the experiment affects this
+value.
+
+\item Click-through-probability
+This metric is not affected by the experiment, given that the click happens
+before the diversion. Nevertheless, it does not tell us anything about the
+experiment and is not a unit of diversion, so it is not very useful.
+
+\subsection{Goal}
+The goal of the experiment is to determine whether adding the question ``are you
+able to dedicate at least $5$ hours per week to your studies'' reduces the
+number of people that sign up for a trial and then leave before paying for the
+first time. Additionally, we want to know whether adding this question would
+prevent people who will eventually go through to payment from signing up.
+We can therefore state our null hypothesis $h_0$ to be that adding the question
+to the process does not affect the proportion of people signing up for the
+trial, or the proportion of people paying wrt the number of people clicking on
+the sign-up button. Broken down wrt the two measures, we define:
+
+\begin{itemize}
+\item $h_0(gc)$: the Gross Conversion is not affected by the experiment
+\item $h_0(nc)$: the Net Conversion is not affected by the experiment
+\end{itemize}
+
+We therefore want to ideally reject the null hypothesis on Gross Conversion
+$h_0(gc)$ and accept the null hypothesis on Net Conversion $h_0(nc)$, or accept
+it with a \emph{positive} value of $\hat{d}$ (which means that revenue would
+actually increase).
+
 \end{itemize}
 
 \section{Variability}
@@ -56,9 +112,12 @@ SE = \sqrt{\frac{\hat{p}(1-\hat{p})}{N}}
 so for each metric, the SE is:
 \begin{itemize}
 \item Gross Conversion: $0.020231$
-\item Retention: $0.0549$
 \item Net conversion: $0.015602$
 \end{itemize}
+
+Given that Gross Conversion and Net Conversion are both using the unit of
+diversion as their denominator, I would expect the analytical variance to match
+the empirical one.
 
 \section{Sizing}
 \subsection{Number of Samples}
@@ -141,24 +200,60 @@ therefore conclude that we have observed a valid change in Gross Conversion.
 \end{itemize}
 
 Net conversion is not statistically, or practically, significant. This
-effectively means that we do not see a change in Net Conversions.
+effectively means that we do not see a change in Net Conversions. I did not use
+the Bonferroni correction, for the same reason as it was not used in the rest of
+the experiment (the metrics are covariate).
 
 \section{Sign Tests}
+\subsection{Gross Conversion}
+\begin{itemize}
+\item $d_{min} = 0.01$
+\item $N_{success} = 4$
+\item $N_{total} = 23$
+\item $p = 0.0026$
+\item $\alpha = 0.025$
+\end{itemize}
+
+Therefore the sign test also reports significance.
+
+\subsection{Net Conversion}
+\begin{itemize}
+\item $d_{min} = 0.075$
+\item $N_{success} = 10$
+\item $N_{total} = 10$
+\item $p = 0.6776$
+\item $\alpha = 0.025$
+\end{itemize}
+
+This confirms the statistical insignificance of the difference.
 
 \section{Results Summary}
+The sign test confirms the results of the effect size test. I did not use the
+Bonferroni correction, because the two measures are positively correlated and it
+would be excessively conservative, especially because we are able to accept the
+null hypothesis on the Net Conversion $h_0(nc)$.
 
 \section{Recommendation}
 The reduction in Gross Conversions is part of what was expected of the new
 change. The number of people signing up would be reduced, and there is no
 significant change in the Net Conversions. This means that there are less people
 signing up and then dropping out. Conversely, the lack of significance on the
-Net Conversions also means that there is no significant lost revenue. This means
-that there is inherent savings in saved resources and a more focused trial. I
-recommend launching the change even though there is no increase in revenue.
+Net Conversions also means that there is no significant lost (or gained)
+revenue. This means that there is inherent savings in saved resources and a more
+focused trial. I recommend launching the change even though there is no increase
+in revenue, as it would make for a more pleasant experience for the students
+that remain enrolled.
 
 \section{Follow-up Experiment}
 If the main concern is for people to be able to pass their initial trial, I
-would recommend testing
+would recommend a ``mid-trial'' quiz, where the user can answer a few
+questions about their expectations wrt their time commitment and if they think
+they will be able to dedicate enough time to the course, and then offer them the
+option to \emph{freeze} the trial for a month. The hypothesis is that the user
+will be able to gauge the commitment needed for the course and reassess at a
+later date.
+The metrics used for this experiment would be number of users (invariant) and
+retention rate (evaluation).
 
 
 \end{document}
