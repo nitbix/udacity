@@ -3,6 +3,7 @@
 \begin{document}
 
 \title{Udacity, A/B Testing}
+\author{Alan Mosca}
 
 \maketitle
 
@@ -100,16 +101,64 @@ experiment. The total duration of the experiment would be of $19.03$ days, which
 will be rounded to $20$. This is an acceptable time.
 
 \section{Sanity Checks}
+We used a $95$\% confidence interval, with a Z-score of $1.96$. For both
+measures we expect a probability of $0.5$.
+
+For the number of cookies, we had a SE of $0.0006$, giving a margin of error of
+$0.0012$ and a confidence interval of $[ 0.4988, 0.5012 ]$. The observed value
+was $0.5006$, so it is considered a pass.
+
+For the number of clicks, we had a SE of $0.0021$, giving a margin of error of
+$0.0041$ and a confidence interval of $[ 0.4958, 0.5041 ]$. The observed value
+was $0.5005$, so it is considered a pass.
 
 \section{Effect Size Tests}
+The measured values from the experiment are as follows:
+
+\subsection{Gross Conversion}
+\begin{itemize}
+\item $P(gc|control) = 0.2189$
+\item $P(gc|experiment) = 0.1983$
+\item $\hat{d} = -0.0206$
+\item $SE = 0.0044$
+\item $ME = 8.5652 \times 10^{-3}$
+\item $CI = [-0.0291,-0.0120]
+\item $d_{min} = 0.01$
+\end{itemize}
+
+Gross Conversion is therefore both statistically and practically significant. We
+therefore conclude that we have observed a valid change in Gross Conversion.
+
+\subsection{Net Conversion}
+\begin{itemize}
+\item $P(nc|control) = 0.1176$
+\item $P(nc|experiment) = 0.1127$
+\item $\hat{d} = -0.0049$
+\item $SE = 3.4340 \time 10^{-3}$
+\item $ME = 6.7228 \times 10^{-3}$
+\item $CI = [-0.0116,0.0018]
+\item $d_{min} = 0.0075$
+\end{itemize}
+
+Net conversion is not statistically, or practically, significant. This
+effectively means that we do not see a change in Net Conversions.
 
 \section{Sign Tests}
 
 \section{Results Summary}
 
 \section{Recommendation}
+The reduction in Gross Conversions is part of what was expected of the new
+change. The number of people signing up would be reduced, and there is no
+significant change in the Net Conversions. This means that there are less people
+signing up and then dropping out. Conversely, the lack of significance on the
+Net Conversions also means that there is no significant lost revenue. This means
+that there is inherent savings in saved resources and a more focused trial. I
+recommend launching the change even though there is no increase in revenue.
 
 \section{Follow-up Experiment}
+If the main concern is for people to be able to pass their initial trial, I
+would recommend testing
 
 
 \end{document}
