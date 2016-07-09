@@ -41,9 +41,10 @@ if the number of people that click on the sign-up link and pay is affected.
 \begin{itemize}
 \item Number of user-ids
 This measure is affected by the experiment, as we can't expect the number of
-user-ids to be split evenly between control and experiment. It also doesn't show
-any useful information about the experiment so it shouldn't be used as an
-evaluation metric.
+user-ids to be split evenly between control and experiment. It could be an
+evaluation metric because it measures the number of students that make it past
+the free trial, but it is not normalized by the number of clicks, so we prefer
+other measures.
 
 \item Retention
 This was initially selected as an evaluation metric because it directly measures
@@ -73,8 +74,9 @@ the sign-up button. Broken down wrt the two measures, we define:
 \item $h_0(nc)$: the Net Conversion is not affected by the experiment
 \end{itemize}
 
-We therefore want to ideally reject the null hypothesis on Gross Conversion
-$h_0(gc)$ and accept the null hypothesis on Net Conversion $h_0(nc)$, or accept
+In order to accept the change, we therefore want to ideally reject the null
+hypothesis on Gross Conversion $h_0(gc)$ with a \emph{negative} value of
+$\hat{d}$ and accept the null hypothesis on Net Conversion $h_0(nc)$, or accept
 it with a \emph{positive} value of $\hat{d}$ (which means that revenue would
 actually increase).
 
@@ -147,10 +149,14 @@ Doubling the maximum because we need this number of pageviews for each
 hypothesis, we get a total of $685325$ pageviews required.
 
 \subsection{Duration vs Exposure}
-Given the relatively low risk nature of the experiment\footnote{It does not
+The experiment does not
 affect any of the pages with content, so it does not affect existing users, and
 it is only adding a small prompt that wouldn't be considered annoying by most
-people}, it makes sense to divert a large amount of traffic to it to reach a
+people. It cleary doesn't hurt anyone because the people that would be
+discouraged by the pop-up message are not likely to finish the course and
+receive a certification, so they would not be missing out. There is also no
+sensitive data being used for the experiment.
+Therefore, it makes sense to divert a large amount of traffic to it to reach a
 conclusion quickly. However, it also makes sense to keep a small amount of
 traffic out of the experiment, in case there was an error or bug in the
 experiment, so that it can be detected quickly.  Therefore I would say that
@@ -229,9 +235,10 @@ This confirms the statistical insignificance of the difference.
 
 \section{Results Summary}
 The sign test confirms the results of the effect size test. I did not use the
-Bonferroni correction, because the two measures are positively correlated and it
-would be excessively conservative, especially because we are able to accept the
-null hypothesis on the Net Conversion $h_0(nc)$.
+Bonferroni correction, because to accept or reject our null hypothesis we are
+considering both Gross and Net Conversion. Therefore the logic operation between
+the two sub-hypotheses is a conjunction, which means that it is not necessary to
+apply the Bonferroni correction.
 
 \section{Recommendation}
 The reduction in Gross Conversions is part of what was expected of the new
@@ -240,9 +247,12 @@ significant change in the Net Conversions. This means that there are less people
 signing up and then dropping out. Conversely, the lack of significance on the
 Net Conversions also means that there is no significant lost (or gained)
 revenue. This means that there is inherent savings in saved resources and a more
-focused trial. I recommend launching the change even though there is no increase
-in revenue, as it would make for a more pleasant experience for the students
-that remain enrolled.
+focused trial. However, the confidence interval on Net Conversions exceeds the
+practical significance boundary on the negative side. As things stand, I do not
+recommend launching the change, because there is still a possibility that it
+would lead to a loss of revenue. Rather than completely abandoning the
+experiment, I would recommend collecting more data to reduce the boundary on
+this metric until its significance is clearer.
 
 \section{Follow-up Experiment}
 If the main concern is for people to be able to pass their initial trial, I
@@ -253,7 +263,9 @@ option to \emph{freeze} the trial for a month. The hypothesis is that the user
 will be able to gauge the commitment needed for the course and reassess at a
 later date.
 The metrics used for this experiment would be number of users (invariant) and
-retention rate (evaluation).
+retention rate (evaluation), and the unit of diversion would be the user-id,
+because at this point the student is logged in and can be tracked with
+precision.
 
 
 \end{document}
